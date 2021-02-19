@@ -16,15 +16,21 @@ class Job
     /**
      * @ORM\PrePersist()
      */
-    public function prePersist(){
+    public function prePersist()
+    {
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
+
+        if (!$this->expiresAt) {
+            $this->expiresAt = (clone $this->createdAt)->modify('+30 days');
+        }
     }
 
     /**
      * @ORM\PreUpdate()
      */
-    public function preUpdate(){
+    public function preUpdate()
+    {
         $this->updatedAt = new \DateTime();
     }
 
